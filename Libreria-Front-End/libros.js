@@ -69,7 +69,7 @@ async function cargarLibros(q = "") {
         <td>${stockTotal}</td>
         <td>${libro.precio != null ? "$" + libro.precio : "—"}</td>
         <td>
-            <a class="link" href="#" onclick="modificarLibro(${libro.id_libro}); return false;">Modificar</a>
+            <a class="link" href="#" onclick="modificarLibro(${libro.id_libro}); return false;">Editar</a>
             <a class="link" href="#" onclick="eliminarLibro(${libro.id_libro}); return false;">Eliminar</a>
         </td>
       `;
