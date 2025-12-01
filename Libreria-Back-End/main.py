@@ -14,7 +14,7 @@ Este módulo:
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
-from routers import libros, inventario, movimientos, usuarios, puntos_venta, inventario_pv,materias_primas
+from routers import libros, inventario, movimientos, usuarios, puntos_venta, inventario_pv,materias_primas, papel
 from fastapi.middleware.cors import CORSMiddleware
 from models import Usuario
 
@@ -70,8 +70,7 @@ app.include_router(usuarios.router)
 app.include_router(puntos_venta.router)
 app.include_router(inventario_pv.router)
 app.include_router(materias_primas.router)
-
-
+app.include_router(papel.router)
 
 @app.get("/")
 def root():

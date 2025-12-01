@@ -1,21 +1,20 @@
 const API_BASE = "http://127.0.0.1:8000";
 
-// Cargar materias primas
+// ================================
+// CARGAR MATERIAS PRIMAS
+// ================================
 async function cargarMateriasPrimas() {
   const cont = document.getElementById("materias-primas-list");
   cont.innerHTML = "<p class='muted small'>Cargando materias primas...</p>";
 
   try {
-    const res = await fetch("http://127.0.0.1:8000/materias_primas/");
+    const res = await fetch(`${API_BASE}/materias_primas/`);
     if (!res.ok) throw new Error("Error al obtener materias primas");
 
     const materias = await res.json();
+    if (!Array.isArray(materias)) throw new Error("Respuesta inválida del servidor");
 
-    if (!Array.isArray(materias)) {
-      throw new Error("Respuesta inválida del servidor");
-    }
-
-    cont.innerHTML = ""; // Limpia lista
+    cont.innerHTML = "";
 
     materias.forEach(mp => {
       cont.innerHTML += `
@@ -41,19 +40,52 @@ async function cargarMateriasPrimas() {
   }
 }
 
+// ================================
+// CARGAR OPCIONES DE PÁGINAS (papel)
+// ================================
+async function cargarOpcionesPaginas() {
+  const select = document.querySelector("select[name='paginas_por_libro']");
+  select.innerHTML = `<option value="">Cargando...</option>`;
 
-// Guardar libro
+  try {
+    const res = await fetch(`${API_BASE}/papel/`);
+    if (!res.ok) throw new Error("Error al obtener páginas");
+
+    const paginas = await res.json();
+    select.innerHTML = `<option value="">Selecciona páginas</option>`;
+    paginas.forEach(p => {
+      // Si el endpoint devuelve solo números, mostramos "X páginas"
+      // Si devuelve objetos con nombre, mostramos ambos
+      if (typeof p === "object" && p.paginas) {
+        select.innerHTML += `<option value="${p.paginas}">${p.paginas} páginas — ${p.nombre}</option>`;
+      } else {
+        select.innerHTML += `<option value="${p}">${p} páginas</option>`;
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+    select.innerHTML = `<option value="">❌ Error al cargar páginas</option>`;
+  }
+}
+
+// ================================
+// GUARDAR LIBRO
+// ================================
 document.getElementById("formNuevoLibro").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const form = e.target;
-
   const nombre = form.nombre.value.trim();
   const precio = Number(form.precio.value);
-  const cantidadLibros = Number(document.getElementById("cantidad-libros").value);
+  const paginas_por_libro = Number(form.paginas_por_libro.value);
 
-  // Tomar materias primas
-  const materias = Array.from(document.querySelectorAll("#lista-mp input"))
+  if (!nombre) return alert("⚠ Ingresa un nombre válido");
+  if (isNaN(precio) || precio < 0) return alert("⚠ Ingresa un precio válido");
+  if (isNaN(paginas_por_libro) || paginas_por_libro < 1) return alert("⚠ Selecciona un número válido de páginas");
+
+  // Tomar materias primas necesarias
+  const materias = Array.from(document.querySelectorAll("#materias-primas-list input"))
     .map(input => ({
       id_mp: Number(input.dataset.id),
       cantidad: Number(input.value)
@@ -63,10 +95,11 @@ document.getElementById("formNuevoLibro").addEventListener("submit", async (e) =
   const payload = {
     nombre,
     precio,
-    paginas_por_libro: 1, // Temporal hasta que recibamos el valor real
-    cantidad_libros: cantidadLibros, // Extra
+    paginas_por_libro,
     materias
   };
+
+  console.log("Payload enviado:", payload); // 👀 depuración
 
   try {
     const res = await fetch(`${API_BASE}/libros/`, {
@@ -76,7 +109,7 @@ document.getElementById("formNuevoLibro").addEventListener("submit", async (e) =
     });
 
     if (!res.ok) {
-      const errData = await res.json();
+      const errData = await res.json().catch(() => ({}));
       alert("❌ Error: " + JSON.stringify(errData));
       return;
     }
@@ -85,9 +118,15 @@ document.getElementById("formNuevoLibro").addEventListener("submit", async (e) =
     window.location.href = "libros.html";
 
   } catch (err) {
+    console.error(err);
     alert("❌ Error de conexión");
   }
 });
 
-
-document.addEventListener("DOMContentLoaded", cargarMateriasPrimas);
+// ================================
+// INICIALIZAR
+// ================================
+document.addEventListener("DOMContentLoaded", () => {
+  cargarMateriasPrimas();
+  cargarOpcionesPaginas();
+});

@@ -65,7 +65,8 @@ class Papel(Base):
 
     paginas = Column(Integer, primary_key=True)
     nombre = Column(String(100), nullable=False)
-    stock_paginas = Column(Integer, nullable=False)
+    stock_paginas = Column(Integer, nullable=False, default=0)
+
 
 
 # ---------------------------------------------------------
@@ -81,6 +82,8 @@ class Libro(Base):
     precio = Column(DECIMAL(10, 2))
     paginas_por_libro = Column(Integer, ForeignKey("papel.paginas"), nullable=False)
     fecha_creacion = Column(DateTime, server_default=func.now(), nullable=False)
+    materias = relationship("LibroMateriaPrima", back_populates="libro", cascade="all, delete-orphan")
+
 
     papel = relationship("Papel")
 
@@ -164,4 +167,22 @@ class MovimientoMP(Base):
 
     materia_prima = relationship("MateriaPrima", back_populates="movimientos")
     usuario = relationship("Usuario")
+    
+# ---------------------------------------------------------
+# TABLA: libro_materia_prima
+# ---------------------------------------------------------
+
+
+class LibroMateriaPrima(Base):
+    __tablename__ = "libro_materia_prima"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_libro = Column(Integer, ForeignKey("libros.id_libro", ondelete="CASCADE"))
+    id_mp = Column(Integer, ForeignKey("materias_primas.id_mp", ondelete="CASCADE"))
+    cantidad = Column(Integer, nullable=False)
+
+    # Relaciones opcionales
+    libro = relationship("Libro", back_populates="materias")
+    materia_prima = relationship("MateriaPrima")
+
     

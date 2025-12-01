@@ -14,7 +14,7 @@ Los esquemas permiten:
 """
 
 from pydantic import BaseModel, Field, EmailStr
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 
@@ -198,6 +198,27 @@ class LibroOut(BaseModel):
     id_libro: int
     nombre: str
     precio: Optional[float]
+    stock_total: int
+
+    class Config:
+        orm_mode = True
+
+
+class MateriaLibro(BaseModel):
+    id_mp: int
+    cantidad: int
+
+class LibroCreate(BaseModel):
+    nombre: str
+    precio: float
+    paginas_por_libro: int
+    materias: List[MateriaLibro] = []
+
+class LibroOut(BaseModel):
+    id_libro: int
+    nombre: str
+    precio: float
+    materias: List[MateriaLibro] = []   # ← opcional, si quieres devolverlas
     stock_total: int
 
     class Config:
