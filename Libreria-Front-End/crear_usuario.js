@@ -64,7 +64,7 @@ async function cargarUsuarios(q = "") {
           <td>${user.nombre}</td>
           <td>${user.email || "—"}</td>
           <td>${user.rol}</td>
-          <td>${user.punto_venta_id || "—"}</td>
+          <td class="pv-col" data-pv="${user.punto_venta_id || ""}">Cargando...</td>
           <td>
             <a href="#" class="link" onclick="abrirModalEditar(${user.id_usuario})">Editar</a>
             <a href="#" class="link" onclick="eliminarUsuario(${user.id_usuario})">Eliminar</a>
@@ -72,11 +72,45 @@ async function cargarUsuarios(q = "") {
         </tr>
       `;
     });
+
+    // 🔥 Llamar al reemplazo de ID → nombre
+    reemplazarPuntosDeVentaPorNombre();
+
   } catch (err) {
     tbody.innerHTML = "<tr><td colspan='6'>Error al cargar usuarios</td></tr>";
     console.error(err);
   }
 }
+
+// ================================
+// CAMBIAR ID → NOMBRE DE PUNTO DE VENTA
+// ================================
+async function reemplazarPuntosDeVentaPorNombre() {
+  const celdas = document.querySelectorAll(".pv-col");
+
+  if (!celdas.length) return;
+
+  for (const celda of celdas) {
+    const id = celda.dataset.pv;
+
+    if (!id) {
+      celda.innerText = "—";
+      continue;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/puntos-venta/${id}`);
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+      celda.innerText = data.nombre;
+
+    } catch (err) {
+      celda.innerText = "Error";
+    }
+  }
+}
+
 
 // ================================
 // CREAR USUARIO
