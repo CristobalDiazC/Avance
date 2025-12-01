@@ -109,8 +109,7 @@ class InventarioPVOut(BaseModel):
     punto_venta: str
     stock: int
     stock_minimo: int | None = None
-    libro: str
-    punto_venta: str
+    precio: float | None = None   
 
     class Config:
         orm_mode = True

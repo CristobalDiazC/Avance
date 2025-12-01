@@ -19,6 +19,7 @@ def listar(db: Session = Depends(get_db)):
             stock=r.stock,
             stock_minimo=r.stock_minimo,
             libro=r.libro.nombre,
+            precio=float(r.libro.precio),   # 👈 añadido
             punto_venta=r.punto_venta.nombre
         )
         for r in registros
@@ -56,6 +57,7 @@ def crear(payload: InventarioPVCreate, db: Session = Depends(get_db)):
             stock=existe.stock,
             stock_minimo=existe.stock_minimo,
             libro=existe.libro.nombre,
+            precio=float(existe.libro.precio),   # 👈 añadido
             punto_venta=existe.punto_venta.nombre
         )
 
@@ -77,6 +79,7 @@ def crear(payload: InventarioPVCreate, db: Session = Depends(get_db)):
         stock=nuevo.stock,
         stock_minimo=nuevo.stock_minimo,
         libro=libro.nombre,
+        precio=float(libro.precio),   # 👈 añadido
         punto_venta=pv.nombre
     )
 
@@ -101,6 +104,7 @@ def ajustar(inv_id: int, payload: InventarioPVAjuste, db: Session = Depends(get_
         stock=inv.stock,
         stock_minimo=inv.stock_minimo,
         libro=inv.libro.nombre,
+        precio=float(inv.libro.precio),   # 👈 añadido
         punto_venta=inv.punto_venta.nombre
     )
 
@@ -121,6 +125,7 @@ def listar_por_punto_venta(pv_id: int, db: Session = Depends(get_db)):
             stock=r.stock,
             stock_minimo=r.stock_minimo,
             libro=r.libro.nombre,
+            precio=float(r.libro.precio),   # 👈 añadido
             punto_venta=r.punto_venta.nombre
         )
         for r in registros
