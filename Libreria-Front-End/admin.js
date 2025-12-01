@@ -29,9 +29,9 @@ async function cargarResumen() {
 }
 
 // ===============================
-// CARGAR ALERTAS DE STOCK BAJO
+// CARGAR ALERTAS DE STOCK BAJO (LIBROS)
 // ===============================
-async function cargarAlertas() {
+async function cargarAlertasLibros() { // ➡️ FUNCIÓN RENOMBRADA PARA CLARIDAD
   try {
     const res = await fetch(`${API_BASE}/inventario/stock-bajo`);
     const alertas = await res.json();
@@ -45,13 +45,44 @@ async function cargarAlertas() {
     }
 
     alertas.forEach(a => {
+      // El enlace lleva a la gestión de inventario
       ul.innerHTML += `
         <li>${a.libro} — Stock: ${a.stock} (Min: ${a.stock_minimo})</li>
       `;
     });
 
   } catch (e) {
-    console.error("Error cargando alertas:", e);
+    console.error("Error cargando alertas de libros:", e);
+  }
+}
+
+// ===============================
+// CARGAR ALERTAS DE STOCK BAJO (MATERIAS PRIMAS)
+// ===============================
+async function cargarAlertasMP() { 
+  try {
+    const res = await fetch(`${API_BASE}/materias_primas/`);
+    const materiasPrimas = await res.json();
+
+    const ul = document.getElementById("alerta-materias-primas");
+    ul.innerHTML = "";
+
+    const alertasMP = materiasPrimas.filter(mp => mp.stock_actual < mp.stock_minimo);
+
+    if (!alertasMP.length) {
+      ul.innerHTML = "<li>No hay alertas de stock.</li>";
+      return;
+    }
+
+    alertasMP.forEach(mp => {
+      // El enlace lleva a la gestión de materias primas
+      ul.innerHTML += `
+        <li>${mp.nombre} — Stock: ${mp.stock_actual} (Min: ${mp.stock_minimo})</li>
+      `;
+    });
+
+  } catch (e) {
+    console.error("Error cargando alertas de materias primas:", e);
   }
 }
 
@@ -104,6 +135,7 @@ function protegerAdmin() {
 document.addEventListener("DOMContentLoaded", () => {
   protegerAdmin();
   cargarResumen();
-  cargarAlertas();
+  cargarAlertasLibros(); 
+  cargarAlertasMP();
   cargarPuntosVentaAdmin();
 });
