@@ -101,14 +101,11 @@ async function cargarPuntosVentaAdmin() {
 
     data.forEach(pv => {
       tbody.innerHTML += `
-        <tr>
-          <td>${pv.id_punto_venta}</td>
           <td>${pv.nombre}</td>
           <td>${pv.ubicacion}</td>
           <td>${pv.tipo}</td>
           <td>
             <a class="link" href="inventario.html?pv=${pv.id_punto_venta}">Inventario</a>
-            <a class="link" href="editar_punto_venta.html?id=${pv.id_punto_venta}">Editar</a>
           </td>
         </tr>
       `;
