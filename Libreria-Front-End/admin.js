@@ -14,9 +14,14 @@ async function cargarResumen() {
     const resInv = await fetch(`${API_BASE}/inventario/`);
     const inventario = await resInv.json();
 
+    // Calcular la suma total del stock
+    const stockTotal = inventario.reduce((sum, item) => sum + item.stock, 0);
+
     document.getElementById("resumen-locales").textContent = puntos.length;
     document.getElementById("resumen-usuarios").textContent = users.length;
-    document.getElementById("resumen-stock").textContent = inventario.length;
+    
+    // Usar el stock total calculado
+    document.getElementById("resumen-stock").textContent = stockTotal; 
 
   } catch (e) {
     console.error("Error cargando resumen:", e);
