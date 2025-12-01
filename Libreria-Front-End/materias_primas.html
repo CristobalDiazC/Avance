@@ -63,20 +63,26 @@
   <!-- Modal Registrar Entrada -->
   <div id="modal-entrada" class="modal hidden">
     <div class="modal-content">
-      <h3>Registrar Entrada</h3>
-      <form id="form-entrada">
-        <label>Materia Prima</label>
-        <select id="entrada-mp"></select>
+      <h3 class="panel-title">📦 Registrar Entrada</h3>
+      <form id="form-entrada" class="form-stack">
+        <div class="form-group">
+          <label for="entrada-mp">Materia Prima</label>
+          <select id="entrada-mp" class="input-styled"></select>
+        </div>
 
-        <label>Cantidad</label>
-        <input type="number" id="entrada-cantidad" required />
+        <div class="form-group">
+          <label for="entrada-cantidad">Cantidad</label>
+          <input type="number" id="entrada-cantidad" class="input-styled" required />
+        </div>
 
-        <label>Observaciones</label>
-        <textarea id="entrada-observaciones"></textarea>
+        <div class="form-group">
+          <label for="entrada-observaciones">Observaciones</label>
+          <textarea id="entrada-observaciones" class="input-styled" rows="3"></textarea>
+        </div>
 
-        <div class="modal-actions">
-          <button type="submit" class="btn primary">Registrar</button>
-          <button type="button" class="btn ghost" onclick="cerrarModalEntrada()">Cancelar</button>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">✅ Registrar</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalEntrada()">❌ Cancelar</button>
         </div>
       </form>
     </div>

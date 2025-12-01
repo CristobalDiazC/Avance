@@ -583,3 +583,33 @@ main.container {
     display: flex;
 }
 
+/* Inputs estilizados para formularios en modales */
+.input-styled {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(15, 23, 36, 0.1);
+  font-size: 14px;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.input-styled:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(43, 110, 246, 0.15);
+  outline: none;
+}
+
+/* Título del modal */
+.panel-title {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Agrupación de campos */
+.form-group {
+  margin-bottom: 14px;
+}

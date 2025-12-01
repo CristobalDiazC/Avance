@@ -253,3 +253,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+function cerrarModalEntrada() {
+  document.getElementById("modal-entrada").classList.add("hidden");
+  document.getElementById("form-entrada").reset(); // ← Limpia campos
+}
