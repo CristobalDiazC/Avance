@@ -57,6 +57,44 @@
     </section>
   </main>
 
+<main class="container">
+    </main>
+
+<div id="modalEditarPV" class="modal hidden">
+    <div class="modal-content">
+      <h3>Editar Punto de Venta</h3>
+
+      <form id="formEditarPV" class="form-stack">
+        <input type="hidden" id="editar-pv-id" />
+
+        <label class="form-label">
+          <span>Nombre</span>
+          <input name="nombre" id="editar-pv-nombre" required />
+        </label>
+
+        <label class="form-label">
+          <span>Ubicación</span>
+          <input name="ubicacion" id="editar-pv-ubicacion" required />
+        </label>
+
+        <label class="form-label">
+          <span>Tipo</span>
+          <select name="tipo" id="editar-pv-tipo" required>
+            <option value="tienda">Tienda</option>
+            <option value="metro">Metro</option>
+            <option value="online">Online</option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Guardar Cambios</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalEditarPV()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+</div>
+
+
   <footer class="site-footer container">
     <small class="muted">Conexión Escrita — Gestión de Puntos de Venta</small>
   </footer>
