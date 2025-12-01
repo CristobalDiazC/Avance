@@ -91,51 +91,67 @@
   <!-- Modal Ajustar Materia Prima -->
   <div id="modal-ajuste" class="modal hidden">
     <div class="modal-content">
-      <h3>Ajustar Materia Prima</h3>
-      <form id="form-ajuste">
+      <h3 class="panel-title"> Ajustar Materia Prima</h3>
+      <form id="form-ajuste" class="form-stack">
         <input type="hidden" id="ajuste-id" />
 
-        <label>Nombre</label>
-        <input type="text" id="ajuste-nombre" required />
+        <div class="form-group">
+          <label for="ajuste-nombre">Nombre</label>
+          <input type="text" id="ajuste-nombre" class="input-styled" required />
+        </div>
 
-        <label>Unidad</label>
-        <input type="text" id="ajuste-unidad" required />
+        <div class="form-group">
+          <label for="ajuste-unidad">Unidad</label>
+          <input type="text" id="ajuste-unidad" class="input-styled" required />
+        </div>
 
-        <label>Stock mínimo</label>
-        <input type="number" id="ajuste-minimo" required />
+        <div class="form-group">
+          <label for="ajuste-minimo">Stock mínimo</label>
+          <input type="number" id="ajuste-minimo" class="input-styled" required />
+        </div>
 
-        <div class="modal-actions">
-          <button type="submit" class="btn primary">Guardar</button>
-          <button type="button" class="btn ghost" onclick="cerrarModalAjuste()">Cancelar</button>
+        <div class="form-actions">
+          <button type="submit" class="btn primary"> Guardar</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalAjuste()"> Cancelar</button>
         </div>
       </form>
     </div>
   </div>
+
 
   <!-- Modal Crear Materia Prima -->
   <div id="modal-crear-mp" class="modal hidden">
     <div class="modal-content">
-      <h3>Nueva Materia Prima</h3>
-      <form id="form-crear-mp">
-        <label>Nombre</label>
-        <input type="text" id="crear-nombre" required />
+      <h3 class="panel-title"> Nueva Materia Prima</h3>
+      <form id="form-crear-mp" class="form-stack">
+        <div class="form-group">
+          <label for="crear-nombre">Nombre</label>
+          <input type="text" id="crear-nombre" class="input-styled" required />
+        </div>
 
-        <label>Unidad</label>
-        <input type="text" id="crear-unidad" required />
+        <div class="form-group">
+          <label for="crear-unidad">Unidad</label>
+          <input type="text" id="crear-unidad" class="input-styled" required />
+        </div>
 
-        <label>Stock mínimo</label>
-        <input type="number" id="crear-minimo" required />
+        <div class="form-group">
+          <label for="crear-minimo">Stock mínimo</label>
+          <input type="number" id="crear-minimo" class="input-styled" required />
+        </div>
 
-        <label>Stock inicial</label>
-        <input type="number" id="crear-stock" value="0" required />
+        <div class="form-group">
+          <label for="crear-stock">Stock inicial</label>
+          <input type="number" id="crear-stock" class="input-styled" value="0" required />
+        </div>
 
-        <div class="modal-actions">
-          <button type="submit" class="btn primary">Crear</button>
-          <button type="button" class="btn ghost" onclick="cerrarModalCrearMP()">Cancelar</button>
+        <div class="form-actions">
+          <button type="submit" class="btn primary"> Crear</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalCrearMP()"> Cancelar</button>
         </div>
       </form>
     </div>
   </div>
+
 
   <script src="materias_primas.js"></script>
 </body>

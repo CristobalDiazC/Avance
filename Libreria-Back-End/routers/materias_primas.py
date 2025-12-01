@@ -113,3 +113,15 @@ def eliminar_materia_prima(mp_id: int, db: Session = Depends(get_db)):
 
     db.delete(mp)
     db.commit()
+
+
+# ============================
+# Obtener materia prima por ID
+# ============================
+
+@router.get("/{mp_id}", response_model=MPOut)
+def obtener_materia_prima(mp_id: int, db: Session = Depends(get_db)):
+    mp = db.query(MateriaPrima).get(mp_id)
+    if not mp:
+        raise HTTPException(status_code=404, detail="Materia prima no encontrada")
+    return mp
