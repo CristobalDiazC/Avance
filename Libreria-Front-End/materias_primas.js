@@ -31,17 +31,19 @@ function mostrarMateriasPrimas(items, tbody) {
     return;
   }
 
-  items.forEach(mp => {
+  items.forEach((mp, index) => {   // ← index = ID visual
+    const idVisual = index + 1;    // ← 1, 2, 3...
+
     const stockColor = mp.stock_actual < mp.stock_minimo
       ? 'style="color: #dc2626; font-weight: 600;"'
       : '';
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${mp.id_mp}</td>
+      <td>${idVisual}</td>                     <!-- ID VISUAL -->
       <td>${mp.nombre}</td>
-      <td ${stockColor}>${mp.stock_actual.toLocaleString()} ${mp.unidad}</td>
-      <td>${mp.stock_minimo.toLocaleString()} ${mp.unidad}</td>
+      <td ${stockColor}>${mp.stock_actual.toLocaleString()}</td>
+      <td>${mp.stock_minimo.toLocaleString()}</td>
       <td>
         <a class="link" href="#" onclick="abrirModalAjuste(${mp.id_mp})">Ajustar</a>
         <a class="link" href="#" onclick="eliminarMateriaPrima(${mp.id_mp})">Eliminar</a>
@@ -50,6 +52,7 @@ function mostrarMateriasPrimas(items, tbody) {
     tbody.appendChild(tr);
   });
 }
+
 
 // ================================
 // MODAL: REGISTRAR ENTRADA
