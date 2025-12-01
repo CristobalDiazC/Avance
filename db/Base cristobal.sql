@@ -21,6 +21,9 @@ USE `libreria`;
 -- select * from puntos_venta;
 -- select * from usuarios;
 
+INSERT INTO papel (paginas, nombre, stock_paginas)
+VALUES (1, 'Papel estándar', 10000);
+
 
 -- AGREGADO POR ROBERTO
 -- UPDATE usuarios
@@ -261,9 +264,21 @@ VALUES (
     12990,
     100
 );
+INSERT INTO libros (nombre, categoria, descripcion, precio, paginas_por_libro)
+VALUES (
+    'Cien citas junto a ti',
+    'Ficción',
+    'Novela clásica de Gabriel García Márquez.',
+    14990,
+    100
+);
 
--- INSERT INTO inventario_pv (id_libro, id_punto_venta, stock)
--- VALUES (1, 1, 20);
+INSERT INTO inventario_pv (id_libro, id_punto_venta, stock)
+VALUES (13, 2, 20);
+UPDATE inventario_pv
+SET stock = stock + 20
+WHERE id_libro = 13 AND id_punto_venta = 2;
+
 
 select * from inventario_pv;
 SELECT * FROM libros;
