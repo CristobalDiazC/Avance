@@ -45,7 +45,7 @@ function mostrarMateriasPrimas(items, tbody) {
       <td ${stockColor}>${mp.stock_actual.toLocaleString()}</td>
       <td>${mp.stock_minimo.toLocaleString()}</td>
       <td>
-        <a class="link" href="#" onclick="abrirModalAjuste(${mp.id_mp})">Ajustar</a>
+        <a class="link" href="#" onclick="abrirModalAjuste(${mp.id_mp})">Editar</a>
         <a class="link" href="#" onclick="eliminarMateriaPrima(${mp.id_mp})">Eliminar</a>
       </td>
     `;
