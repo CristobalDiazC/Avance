@@ -116,7 +116,7 @@ img {
   text-decoration: none;
   color: var(--muted);
   font-size: 14px;
-  padding: 6px 10px;
+  padding: 6px 8px;
   border-radius: 8px;
   transition: 0.2s;
 }
@@ -210,13 +210,12 @@ main.container {
     padding-top: 60px; 
 }
 
-
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 260px 1fr 320px;
-  gap: 18px;
+  grid-template-columns: 260px 1fr 300px;
+  gap: 25px;
   align-items: start;
-  margin-top: 18px;
+  margin-top: 25px;
 }
 
 .panel {
@@ -227,7 +226,7 @@ main.container {
 }
 
 .panel.wide {
-  grid-column: 2/3;
+  grid-column: 2/4;
 }
 
 .panel-row {
@@ -491,7 +490,7 @@ main.container {
 
 /* Reducir separación vertical total */
 main.container {
-    padding-top: 50px !important;     /* antes 60px */
+    padding-top: 70px !important;     /* antes 60px */
     margin-top: 0 !important;
 }
 
