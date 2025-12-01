@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Gestión de Usuarios</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-dashboard">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Administrador</span>
+      </div>
+
+      <nav class="nav">
+        <a href="admin.html">Dashboard</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="crear_usuario.html" class="active">Usuarios</a>
+        <a href="materias_primas.html">Materias Primas</a>
+        <a href="puntos_venta.html">Puntos de Venta</a>
+        <a href="libros.html">Libros</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="panel-row">
+        <h3>Lista de Usuarios</h3>
+
+        <form id="filterFormUsuarios" class="form-inline" method="GET">
+          <input name="q" placeholder="Buscar por nombre o email" />
+          <button class="btn">Buscar</button>
+
+          <button type="button" class="btn primary" onclick="window.location.href='nuevo_usuario.html'">
+            + Nuevo Usuario
+          </button>
+
+        </form>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Punto de Venta</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabla-usuarios">
+            <tr><td colspan='6'>Cargando usuarios...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <small class="muted">Conexión Escrita — Gestión de Usuarios</small>
+  </footer>
+
+  <!-- ============================================================
+       MODAL: CREAR USUARIO
+  ============================================================ -->
+  <div id="modal-crear" class="modal hidden">
+    <div class="modal-content">
+      <h3>Crear nuevo usuario</h3>
+
+      <form id="form-crear-usuario">
+        <label>Nombre:</label>
+        <input type="text" id="crear-nombre" required />
+
+        <label>Email:</label>
+        <input type="email" id="crear-email" required />
+
+        <label>Contraseña:</label>
+        <input type="password" id="crear-pass" required minlength="6" />
+
+        <label>Rol:</label>
+        <select id="crear-rol">
+          <option value="admin">Administrador</option>
+          <option value="vendedor">Vendedor</option>
+        </select>
+
+        <label>Punto de Venta (solo vendedores):</label>
+        <select id="crear-pv">
+          <option value="">Seleccionar...</option>
+        </select>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Crear</button>
+          <button type="button" class="btn ghost" onclick="cerrarModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL: EDITAR USUARIO
+  ============================================================ -->
+  <div id="modal-editar" class="modal hidden">
+    <div class="modal-content">
+      <h3>Editar Usuario</h3>
+
+      <form id="form-editar-usuario">
+
+        <input type="hidden" id="editar-id" />
+
+        <label>Nombre:</label>
+        <input type="text" id="editar-nombre" required />
+
+        <label>Email:</label>
+        <input type="email" id="editar-email" required />
+
+        <label>Contraseña (dejar vacío para no cambiarla):</label>
+        <input type="password" id="editar-pass" minlength="6" />
+
+        <label>Rol:</label>
+        <select id="editar-rol">
+          <option value="admin">Administrador</option>
+          <option value="vendedor">Vendedor</option>
+        </select>
+
+        <label>Punto de Venta (solo vendedores):</label>
+        <select id="editar-pv">
+          <option value="">Seleccionar...</option>
+        </select>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Guardar Cambios</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalEditar()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script>
+    const rol = localStorage.getItem("userRole");
+    if (rol !== "admin") {
+      window.location.href = "index.html";
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+
+  <script src="crear_usuario.js"></script>
+</body>
+</html>

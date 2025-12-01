@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nuevo Libro — Conexión Escrita</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-dashboard">
+
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="logo">
+      <h2>Conexión Escrita</h2>
+      <span class="muted small">Administrador</span>
+    </div>
+    <nav class="nav">
+      <a href="admin.html">Dashboard</a>
+      <a href="inventario.html">Inventario</a>
+      <a href="crear_usuario.html">Usuarios</a>
+      <a href="materias_primas.html">Materias Primas</a>
+      <a href="puntos_venta.html">Puntos de Venta</a>
+      <a href="libros.html" class="active">Libros</a>
+      <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="panel" style="max-width: 650px; margin: 0 auto;">
+
+    <h2>Agregar Nuevo Libro</h2>
+
+    <form id="formNuevoLibro" class="form-stack">
+
+      <label class="form-label">
+        <span>Nombre del Libro</span>
+        <input name="nombre" type="text" required />
+      </label>
+
+      <label class="form-label">
+        <span>Precio</span>
+        <input name="precio" type="number" min="0" step="0.01" required />
+      </label>
+
+      <h4>Materias Primas Necesarias</h4>
+      <div id="materias-primas-list" class="materias-primas-grid">
+        <p class="muted small">Cargando materias primas...</p>
+      </div>
+
+      <p class="muted small">Cantidad necesaria de cada materia prima para fabricar 1 unidad.</p>
+
+      <div class="form-actions">
+        <button type="submit" class="btn primary">Guardar Libro</button>
+        <button type="button" class="btn ghost" onclick="window.location.href='libros.html'">Cancelar</button>
+      </div>
+
+    </form>
+
+  </section>
+
+</main>
+
+<script src="nuevo_libro.js"></script>
+
+</body>
+</html>

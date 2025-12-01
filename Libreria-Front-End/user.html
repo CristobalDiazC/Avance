@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Panel Vendedor</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-dashboard">
+
+  <!-- MENÚ SUPERIOR SOLO PARA VENDEDORES -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Vendedor</span>
+      </div>
+
+      <nav class="nav">
+        <a href="user.html" class="active">Mi Punto de Venta</a>
+        <a href="inventario_user.html">Inventario</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="panel">
+      <h3>Bienvenido</h3>
+      <p id="info-pv">Cargando información del punto de venta...</p>
+    </section>
+
+    <section class="panel">
+      <h3>Inventario de tu Punto de Venta</h3>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Libro</th>
+              <th>Stock</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-inv-user">
+            <tr><td colspan="3">Cargando inventario...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer container">
+    <small class="muted">Conexión Escrita — Panel Vendedor</small>
+  </footer>
+
+<script>
+  function logout() {
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userPV");
+    window.location.href = "index.html";
+  }
+
+  // PROTEGER RUTA SOLO PARA VENDEDORES
+  (function protegerRuta() {
+    const rol = localStorage.getItem("userRole");
+    if (rol !== "vendedor") {
+      window.location.href = "index.html";
+    }
+  })();
+</script>
+
+<script src="user.js"></script>
+</body>
+</html>

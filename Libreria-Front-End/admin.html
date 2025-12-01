@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Panel Administrador</title>
+
+  <link rel="stylesheet" href="estilo.css" />
+
+  <!-- Conexión al backend -->
+  <script src="admin.js" defer></script>
+</head>
+
+<body class="page-dashboard">
+
+  <!-- ============================
+       BARRA SUPERIOR
+  ============================ -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Administrador</span>
+      </div>
+
+      <nav class="nav">
+        <a href="admin.html" class="active">Dashboard</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="crear_usuario.html">Usuarios</a>
+        <a href="materias_primas.html">Materias Primas</a>
+        <a href="puntos_venta.html">Puntos de Venta</a>
+        <a href="libros.html">Libros</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ============================
+         ALERTAS
+    ============================ -->
+    <section class="panel wide alert-panel" style="margin-top: 18px; margin-bottom: 18px;">
+      <h3><span style="color: #dc2626; margin-right: 8px;">⚠</span> Alerta de Stock Bajo</h3>
+
+      <div class="alert-content-grid">
+        
+        <!-- MATERIAS PRIMAS -->
+        <div class="alert-section">
+          <h4>Materias Primas (Stock Mínimo)</h4>
+          <ul class="alert-list" id="alerta-materias-primas">
+            <li>Cargando...</li>
+          </ul>
+        </div>
+
+        <!-- LIBROS -->
+        <div class="alert-section">
+          <h4>Libros (Stock Mínimo por Punto de Venta)</h4>
+          <ul class="alert-list" id="alerta-libros">
+            <li>Cargando...</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================
+         RESUMEN GLOBAL
+    ============================ -->
+    <div class="dashboard-grid">
+
+      <aside class="panel summary">
+        <h3>Resumen global</h3>
+        <ul class="stats-list">
+          <li><strong id="resumen-locales">0</strong><span>Locales</span></li>
+          <li><strong id="resumen-stock">0</strong><span>Libros en stock</span></li>
+          <li><strong id="resumen-usuarios">0</strong><span>Usuarios activos</span></li>
+          <li><strong>$0</strong><span>Ventas hoy</span></li>
+        </ul>
+      </aside>
+
+      <!-- ============================
+           TABLA DE LOCALES
+      ============================ -->
+      <section class="panel wide">
+        <h3>Puntos de venta</h3>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Local</th>
+              <th>Ubicación</th>
+              <th>Tipo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabla-admin-pv">
+            <tr><td colspan="5">Cargando puntos de venta...</td></tr>
+          </tbody>
+
+        </table>
+      </section>
+
+
+    </div>
+
+  </main>
+
+  <footer class="site-footer container">
+    <small class="muted">Conexión Escrita — Panel administrador</small>
+  </footer>
+
+  <!-- ============================
+       PROTEGER RUTA Y LOGOUT
+  ============================ -->
+  <script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+
+    (function protegerRuta() {
+      const rol = localStorage.getItem("userRole");
+      if (rol !== "admin") {
+        window.location.href = "index.html";
+      }
+    })();
+  </script>
+
+</body>
+</html>

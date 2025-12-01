@@ -1,0 +1,36 @@
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entorno virtual
+venv/
+.venv/
+
+# Configuración y variables de entorno
+.env
+
+# Archivos de logs
+*.log
+
+# ---- Node / Frontend ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Browser Sync cache
+.bs-sync/
+
+# Archivos temporales
+.DS_Store
+Thumbs.db
+
+# Archivos de compilación o bundlers
+dist/
+build/
+
+# ---- Fake API ----
+Libreria-Front-End/fake-api/*.json

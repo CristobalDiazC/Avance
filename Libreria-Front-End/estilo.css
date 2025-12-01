@@ -1,0 +1,584 @@
+/* ===============================
+   Conexión Escrita — styles.css
+   Diseño responsivo y moderno
+   =============================== */
+
+/* -------- Variables globales -------- */
+:root {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: #2b6ef6;
+  --accent-2: #0ea5a4;
+  --text: #0f1724;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(15, 23, 36, 0.06);
+  --gap: 16px;
+  --container-w: 1100px;
+}
+
+/* -------- Base -------- */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg), #eef2f6 120%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+/* -------- Containers -------- */
+.container {
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+/* -------- Cards -------- */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.card-sm {
+  max-width: 420px;
+  width: 100%;
+}
+
+.card-header {
+  margin-bottom: 12px;
+}
+
+.card-footer {
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* -------- Topbar (Fijo/Sticky) -------- */
+.topbar {
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 10px 0;
+  
+  /* REGLAS PARA BARRA FIJA GARANTIZADA (position: fixed) */
+  position: fixed; 
+  top: 0;           
+  left: 0;           
+  right: 0;          
+  z-index: 100;      
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.logo .small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* -------- Navigation -------- */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.nav a:hover {
+  background: rgba(43, 110, 246, 0.08);
+  color: var(--accent);
+}
+
+.nav a.active {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.btn-sm {
+  border: 1px solid rgba(15, 23, 36, 0.06);
+  background: transparent;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+/* -------- Buttons -------- */
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: white;
+  border: none;
+  box-shadow: 0 6px 16px rgba(43, 110, 246, 0.12);
+}
+
+.btn.primary:hover {
+  background: #1e5ae9;
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid rgba(15, 23, 36, 0.08);
+  color: var(--text);
+}
+
+/* -------- Forms -------- */
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-label input,
+.form-inline input,
+.form-inline select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(15, 23, 36, 0.1);
+  font-size: 14px;
+  outline: none;
+}
+
+.form-label input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(43, 110, 246, 0.15);
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+/* -------- Dashboard Layout -------- */
+
+/* Compensación para la barra de navegación fija */
+main.container {
+    padding-top: 60px; 
+}
+
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr 320px;
+  gap: 18px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+.panel {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.panel.wide {
+  grid-column: 2/3;
+}
+
+.panel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* -------- Stats -------- */
+.stats-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stats-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(250,250,255,1), rgba(245,247,250,1));
+  padding: 10px 14px;
+  border-radius: 8px;
+}
+
+.stats-list li strong {
+  font-size: 18px;
+}
+
+/* -------- Tables -------- */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th, .table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(15, 23, 36, 0.06);
+}
+
+.table th {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.link {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* -------- Quick Actions -------- */
+.actions-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.card-quick {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 90px;
+  text-decoration: none;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(249,250,252,0.9));
+  box-shadow: var(--shadow);
+  transition: 0.2s;
+}
+
+.card-quick:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(15,23,36,0.08);
+}
+
+.card-quick .big {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+/* -------- Activity List -------- */
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.activity-list li {
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(15, 23, 36, 0.05);
+}
+
+/* -------- Inventory Filters -------- */
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.form-inline input, .form-inline select {
+  flex: 1;
+  min-width: 140px;
+}
+
+/* -------- Footer -------- */
+.site-footer {
+  margin-top: 24px;
+  padding: 18px 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ===============================
+   NUEVAS CLASES PARA ALERTAS (ADMIN.HTML)
+   =============================== */
+
+/* Asegurar que la grilla de contenido de la alerta se divida en dos */
+.alert-content-grid {
+    display: flex;
+    gap: 20px;
+    padding-top: 10px;
+}
+
+/* Hacer que cada sección ocupe la mitad */
+.alert-section {
+    flex: 1;
+    padding: 0 10px;
+}
+
+/* Títulos más pequeños para las secciones de alerta */
+.alert-section h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* Lista simple y compacta para las alertas */
+.alert-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* -------- Responsive Design -------- */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel.wide {
+    grid-column: 1 / -1;
+  }
+  
+  /* Asegurar que el panel de alerta también sea ancho en tablets */
+  .alert-panel {
+    grid-column: 1 / -1;
+  }
+
+  .stats-list li strong {
+    font-size: 16px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 640px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  .topbar-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .card-sm {
+    margin: 12px;
+  }
+
+  .actions-grid {
+    justify-content: center;
+  }
+
+  .card-quick {
+    width: 45%;
+    height: 80px;
+  }
+
+  .form-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn, .btn.primary, .btn.ghost {
+    width: 100%;
+  }
+
+  /* NUEVO: En móviles, apilar las secciones de alerta */
+  .alert-content-grid {
+      flex-direction: column;
+  }
+  .alert-section:first-child {
+      border-right: none;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(15, 23, 36, 0.08);
+  }
+}
+
+/* Separador visual entre las dos secciones de alerta en pantallas grandes */
+@media (min-width: 768px) {
+    .alert-section:first-child {
+        border-right: 1px solid rgba(15, 23, 36, 0.08);
+    }
+}
+
+/* ===============================
+   Compactación del Dashboard
+   =============================== */
+
+/* Reducir espacio entre tarjetas */
+.panel {
+    padding: 12px !important;         /* antes 16–24px */
+    margin-bottom: 12px !important;   /* antes 24–30px */
+}
+
+/* Reducir separación vertical total */
+main.container {
+    padding-top: 50px !important;     /* antes 60px */
+    margin-top: 0 !important;
+}
+
+/* Dashboard más compacto */
+.dashboard-grid {
+    gap: 12px !important;             /* antes 18–24px */
+    margin-top: 10px !important;
+}
+
+/* Listas más compactas */
+.stats-list li {
+    padding: 6px 10px !important;     /* antes 10px 14px */
+}
+
+/* Tablas más compactas */
+.table th, .table td {
+    padding: 6px 8px !important;      /* antes 10px */
+}
+
+/* Encabezados más apretados */
+.panel h3, .panel h4 {
+    margin-top: 0 !important;
+    margin-bottom: 6px !important;    /* antes 12px+ */
+}
+
+/* Reduce espacios entre filas */
+.panel-row {
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+/* El bloque Resumen + Puntos de venta quede más unido */
+.panel.wide {
+    margin-top: 8px !important;
+}
+
+/* Compactar alertas */
+.alert-content-grid {
+    gap: 12px !important;
+    padding-top: 4px !important;
+}
+
+.alert-section {
+    padding: 0 6px !important;
+}
+
+
+
+
+/* ===============================
+   REGLAS PARA MODALES (SOLUCIÓN AL ERROR DE VISIBILIDAD)
+   =============================== */
+
+/* 1. Ocultar la clase 'hidden' universalmente */
+.hidden {
+  display: none !important;
+}
+
+/* 2. Definir el estilo base del modal (por defecto oculto) */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que esté por encima de todo */
+  /* Lo más importante: asegurar que esté oculto por defecto */
+  display: none; 
+}
+
+/* 3. Definir cómo se ve el modal-content para centrar el formulario */
+.modal-content {
+  background: var(--card); /* Blanco */
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  width: 90%;
+  max-width: 500px; /* Tamaño máximo para el formulario */
+  transform: translateY(-50px); /* Para animación sutil */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 4. Cuando JS quita la clase 'hidden', usamos flex para mostrarlo */
+.modal:not(.hidden) {
+    display: flex;
+}

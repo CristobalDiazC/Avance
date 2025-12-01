@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Inventario</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-inventario">
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Inventario</h2>
+        <span class="muted small">Conexión Escrita</span>
+      </div>
+      <nav class="nav">
+        <a href="admin.html">Dashboard</a>
+        <a href="inventario.html" class="active">Inventario</a>
+        <a href="crear_usuario.html">Usuarios</a>
+        <a href="materias_primas.html">Materias Primas</a>
+        <a href="puntos_venta.html">Puntos de venta</a>
+        <a href="libros.html">Libros</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+
+      <!-- 🔎 Filtro y selección de punto de venta -->
+      <div class="panel-row">
+        <h3>Filtro / Búsqueda</h3>
+
+        <form id="filterForm" class="form-inline">
+          
+          <!-- ⭐ ESTE ES EL SELECT CORRECTO -->
+          <select id="selectPV">
+            <option value="">Inventario Global</option>
+          </select>
+
+          <input name="q" placeholder="Buscar libro...">
+          <button class="btn">Buscar</button>
+        </form>
+      </div>
+
+      <!-- 📋 Tabla inventario -->
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID Inv.</th>
+              <th>Libro</th>
+              <th>Punto de Venta</th>
+              <th>Stock</th>
+              <th>Stock Mínimo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabla-libros">
+            <tr>
+              <td colspan='6'>Cargando inventario...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel-row">
+        <button class="btn primary">Cargar más</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ⭐ PANEL PARA AGREGAR LIBRO -->
+  <div id="panelAgregarPV" style="display:none; margin-top:20px;">
+    <button class="btn primary" onclick="abrirModalAgregar()">+ Agregar libro a este PV</button>
+  </div>
+
+  <!-- ⭐ MODAL -->
+  <div id="modalAgregar" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Agregar libro al punto de venta</h3>
+
+      <label>Libro:</label>
+      <select id="libroSelect"></select>
+
+      <label>Stock inicial:</label>
+      <input type="number" id="stockInicial" min="0" />
+
+      <label>Stock mínimo:</label>
+      <input type="number" id="stockMinimo" min="0" value="5" />
+
+      <div class="modal-actions">
+        <button class="btn" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn primary" onclick="confirmarAgregar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .modal {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display:flex; justify-content:center; align-items:center;
+    }
+    .modal-content {
+      background:#fff; padding:20px; width:350px; border-radius:8px;
+    }
+    .modal-actions {
+      display:flex; justify-content:space-between; margin-top:20px;
+    }
+  </style>
+
+  <footer class="site-footer container">
+    <small class="muted">Gestiona stock, ventas y entradas. Los permisos dependen de tu rol.</small>
+  </footer>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("userRole");
+      window.location.href = "index.html";
+    }
+
+    (function protegerRuta() {
+      const rol = localStorage.getItem("userRole");
+      if (!rol) {
+        window.location.href = "index.html";
+      }
+    })();
+  </script>
+
+  <script src="inventario.js"></script>
+
+</body>
+</html>

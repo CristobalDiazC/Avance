@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Conexión Escrita — Login</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-login">
+  <main class="container center">
+    <section class="card card-sm">
+      <header class="card-header">
+        <h1>Conexión Escrita</h1>
+        <p class="muted">Gestión de inventario — Acceso</p>
+      </header>
+
+      <form id="loginForm" class="form-stack">
+        <label class="form-label">
+          <span>Correo electrónico</span>
+          <input name="email" type="email" placeholder="tu@empresa.cl" required />
+        </label>
+
+        <label class="form-label">
+          <span>Contraseña</span>
+          <input name="password" type="password" placeholder="*******" required />
+        </label>
+
+        <label class="form-row">
+          <input id="remember" name="remember" type="checkbox" />
+          <span for="remember">Mantener sesión</span>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Entrar</button>
+          <a class="btn ghost" href="#" onclick="alert('Contacte al administrador para crear cuentas')">Ayuda</a>
+        </div>
+      </form>
+
+      <footer class="card-footer muted small">
+        <p>¿Eres administrador? Accede con tu cuenta de propietario.</p>
+      </footer>
+    </section>
+
+    <section class="brand-note">
+      <p><strong>Conexión Escrita</strong> — Inventario de librería accesible desde cualquier dispositivo.</p>
+    </section>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>

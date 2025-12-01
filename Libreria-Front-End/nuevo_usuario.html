@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nuevo Usuario</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-dashboard">
+
+  <!-- MENÚ SUPERIOR -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Administrador</span>
+      </div>
+
+      <nav class="nav">
+        <a href="admin.html">Dashboard</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="crear_usuario.html" class="active">Usuarios</a>
+        <a href="materias_primas.html">Materias Primas</a>
+        <a href="puntos_venta.html">Puntos de Venta</a>
+        <a href="libros.html">Libros</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="panel" style="max-width: 650px; margin: 0 auto;">
+
+      <h2>Crear Nuevo Usuario</h2>
+
+      <form id="formNuevoUsuario" class="form-stack">
+
+        <label>
+          <span>Nombre</span>
+          <input name="nombre" required />
+        </label>
+
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" required />
+        </label>
+
+        <label>
+          <span>Contraseña</span>
+          <input type="password" name="contrasena" minlength="6" required />
+        </label>
+
+        <label>
+          <span>Rol</span>
+          <select name="rol" id="selectRol">
+            <option value="admin">Administrador</option>
+            <option value="vendedor">Vendedor</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Punto de Venta (solo vendedores)</span>
+          <select name="punto_venta_id" id="selectPV">
+            <option value="">Seleccionar...</option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Crear</button>
+          <button type="button" class="btn ghost" onclick="window.location.href='crear_usuario.html'">Cancelar</button>
+        </div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <script src="nuevo_usuario.js"></script>
+
+</body>
+</html>

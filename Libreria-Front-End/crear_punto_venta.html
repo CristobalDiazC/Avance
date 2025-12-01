@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nuevo Punto de Venta</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-dashboard">
+
+  <!-- MENÚ SUPERIOR (igual que siempre) -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Administrador</span>
+      </div>
+      <nav class="nav">
+        <a href="admin.html">Dashboard</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="crear_usuario.html">Usuarios</a>
+        <a href="materias_primas.html">Materias Primas</a>
+        <a href="puntos_venta.html" class="active">Puntos de Venta</a>
+        <a href="libros.html">Libros</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="panel" style="max-width: 600px; margin: 0 auto;">
+
+      <h2>Crear Nuevo Punto de Venta</h2>
+
+      <form id="formPV" class="form-stack">
+
+        <label class="form-label">
+          <span>Nombre</span>
+          <input name="nombre" required />
+        </label>
+
+        <label class="form-label">
+          <span>Ubicación</span>
+          <input name="ubicacion" required />
+        </label>
+
+        <label class="form-label">
+          <span>Tipo</span>
+          <select name="tipo" required>
+            <option value="">Seleccionar...</option>
+            <option value="tienda">Tienda</option>
+            <option value="metro">Metro</option>
+            <option value="online">Online</option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Aceptar</button>
+          <button type="button" id="btnCancelarPV" class="btn ghost">Cancelar</button>
+        </div>
+      </form>
+
+    </section>
+
+  </main>
+<script src="crear_punto_venta.js"></script>
+
+
+</body>
+</html>

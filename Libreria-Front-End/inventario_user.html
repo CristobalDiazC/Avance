@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Inventario del Punto de Venta</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+
+<body class="page-inventario">
+
+  <!-- BARRA SUPERIOR (VERSIÓN USUARIO) -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Inventario</h2>
+        <span class="muted small">Punto de Venta</span>
+      </div>
+
+      <nav class="nav">
+        <a href="user.html">Dashboard</a>
+        <a href="inventario_user.html" class="active">Inventario</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="panel">
+      <div class="panel-row">
+        <h3>Inventario de tu Punto de Venta</h3>
+
+        <form id="filterFormUser" class="form-inline">
+          <input name="q" placeholder="Buscar libro" />
+          <button class="btn">Buscar</button>
+        </form>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Libro</th>
+              <th>Stock</th>
+              <th>Mínimo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-inventario-user">
+            <tr>
+              <td colspan="4">Cargando inventario...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer container">
+    <small class="muted">Conexión Escrita — Panel Vendedor</small>
+  </footer>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("userPV");
+      window.location.href = "index.html";
+    }
+
+    // Protección SOLO para vendedores
+    (function protegerRuta() {
+      const rol = localStorage.getItem("userRole");
+      if (rol !== "vendedor") {
+        window.location.href = "index.html";
+      }
+    })();
+  </script>
+
+  <script src="inventario_user.js"></script>
+
+</body>
+</html>

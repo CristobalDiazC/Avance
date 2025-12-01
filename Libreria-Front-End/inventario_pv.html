@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario por Punto de Venta</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">Inventario PV</div>
+    <a href="index.html" class="btn-sm ghost">Volver</a>
+  </header>
+
+  <main class="container">
+    <h2 style="margin-bottom: 15px;">Inventario por Punto de Venta</h2>
+
+    <button class="btn" id="btn-nuevo-pv">➕ Crear Inventario PV</button>
+
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Libro</th>
+          <th>Punto de Venta</th>
+          <th>Stock</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-pv"></tbody>
+    </table>
+  </main>
+
+  <!-- ===== Modal Crear Inventario PV ===== -->
+  <div id="modal-crear" class="modal hidden">
+    <div class="modal-content">
+      <h3>Crear Inventario para un Punto de Venta</h3>
+
+      <label>Libro</label>
+      <select id="sel-libro"></select>
+
+      <label>Punto de Venta</label>
+      <select id="sel-pv"></select>
+
+      <label>Stock inicial</label>
+      <input type="number" id="stock-inicial" value="0" />
+
+      <div class="modal-actions">
+        <button id="crear-inv-btn" class="btn">Crear</button>
+        <button class="btn ghost" onclick="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal Ajustar Stock ===== -->
+  <div id="modal-ajustar" class="modal hidden">
+    <div class="modal-content">
+      <h3>Ajustar Stock</h3>
+
+      <label>Cantidad (ej: +10, -5)</label>
+      <input type="number" id="ajuste-cantidad" />
+
+      <div class="modal-actions">
+        <button id="btn-ajustar-stock" class="btn">Aplicar</button>
+        <button class="btn ghost" onclick="cerrarModalAjuste()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="inventarioPV.js"></script>
+</body>
+</html>

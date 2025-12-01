@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Gestión de Puntos de Venta</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body class="page-dashboard">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Administrador</span>
+      </div>
+      <nav class="nav">
+        <a href="admin.html">Dashboard</a>
+        <a href="inventario.html">Inventario</a>
+        <a href="crear_usuario.html">Usuarios</a>
+        <a href="materias_primas.html">Materias Primas</a>
+        <a href="puntos_venta.html" class="active">Puntos de Venta</a>
+        <a href="libros.html">Libros</a>
+        <a href="#" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="panel-row">
+        <h3>Lista de Puntos de Venta</h3>
+        <form id="filterFormPV" class="form-inline" method="GET" action="/puntos-venta">
+          <input name="q" placeholder="Buscar por nombre o ubicación" />
+          <button class="btn">Buscar</button>
+          <button type="button" class="btn primary" onclick="location.href='crear_punto_venta.html'">
+            + Nuevo Punto de Venta
+          </button>
+        </form>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Ubicación</th>
+              <th>Tipo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-puntos-venta">
+            <tr><td colspan='5'>Cargando puntos de venta...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <small class="muted">Conexión Escrita — Gestión de Puntos de Venta</small>
+  </footer>
+<script>
+  function logout() {
+    localStorage.removeItem("userRole");
+    window.location.href = "index.html";
+  }
+
+  // Proteger esta ruta: solo para admin
+  (function protegerRuta() {
+    const rol = localStorage.getItem("userRole");
+    if (rol !== "admin") {
+      window.location.href = "index.html";
+    }
+  })();
+</script>
+<script src="puntos_venta.js"></script>
+</body>
+</html>
