@@ -23,7 +23,7 @@ class LibroBase(BaseModel):
     nombre: str = Field(..., min_length=1, max_length=150)
     categoria: Optional[str] = None
     descripcion: Optional[str] = None
-    precio: Optional[float] = None
+    precio: Optional[int] = None
     paginas_por_libro: int
 
 # Esquema para crear nuevo libro
@@ -39,11 +39,7 @@ class LibroUpdate(BaseModel):
     paginas_por_libro: Optional[int] = None
 
 # Esquema de salida para libro
-class LibroOut(LibroBase):
-    id_libro: int
-    fecha_creacion: datetime
-    class Config:
-        from_attributes = True  
+
 
 # Esquema para mostrar el inventario de un libro
 class InventarioOut(BaseModel):
@@ -196,7 +192,7 @@ class MPOut(MPBase):
 class LibroOut(BaseModel):
     id_libro: int
     nombre: str
-    precio: Optional[float]
+    precio: Optional[int] = None
     stock_total: int
 
     class Config:

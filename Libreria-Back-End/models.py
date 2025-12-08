@@ -78,7 +78,7 @@ class Libro(Base):
     nombre = Column(String(150), nullable=False)
     categoria = Column(String(100))
     descripcion = Column(Text)
-    precio = Column(DECIMAL(10, 2))
+    precio = Column(Integer)
     paginas_por_libro = Column(Integer, ForeignKey("papel.paginas"), nullable=False)
     fecha_creacion = Column(DateTime, server_default=func.now(), nullable=False)
 

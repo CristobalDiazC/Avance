@@ -18,7 +18,7 @@ from typing import List, Optional
 from database import SessionLocal
 from schemas import LibroCreate, LibroUpdate, LibroOut
 from sqlalchemy import func
-from models import Libro, InventarioPV  # Asegúrate de tener InventarioPV en models
+from models import Libro, InventarioPV, InventarioLibro  # Asegúrate de tener InventarioPV en models
 
 # Router de libros
 router = APIRouter(prefix="/libros", tags=["Libros"])
@@ -34,11 +34,29 @@ def get_db():
 # Crear libros
 @router.post("/", response_model=LibroOut, status_code=status.HTTP_201_CREATED)
 def crear_libro(payload: LibroCreate, db: Session = Depends(get_db)):
+
+    # 1. Crear el libro
     libro = Libro(**payload.model_dump())
     db.add(libro)
     db.commit()
     db.refresh(libro)
-    return libro
+
+    # 2. Crear inventario global (stock = 0)
+    inventario = InventarioLibro(
+        libro_id=libro.id_libro,
+        stock=0
+    )
+    db.add(inventario)
+    db.commit()
+
+    # 3. Respuesta correcta con el campo requerido
+    return {
+        "id_libro": libro.id_libro,
+        "nombre": libro.nombre,
+        "precio": int(libro.precio) if libro.precio else None,
+        "stock_total": 0
+    }
+
 
 # Listar todos los libros
 @router.get("/", response_model=List[LibroOut])
