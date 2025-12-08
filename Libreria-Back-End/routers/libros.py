@@ -32,30 +32,34 @@ def get_db():
         db.close()
         
 # Crear libros
-@router.post("/", response_model=LibroOut, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=LibroOut, status_code=201)
 def crear_libro(payload: LibroCreate, db: Session = Depends(get_db)):
 
-    # 1. Crear el libro
-    libro = Libro(**payload.model_dump())
+    # 1. Filtrar campos del libro (evitar cantidad_libros)
+    data_libro = payload.model_dump(exclude={"cantidad_libros"})
+
+    # 2. Crear el libro
+    libro = Libro(**data_libro)
     db.add(libro)
     db.commit()
     db.refresh(libro)
 
-    # 2. Crear inventario global (stock = 0)
+    # 3. Crear inventario con la cantidad solicitada
     inventario = InventarioLibro(
         libro_id=libro.id_libro,
-        stock=0
+        stock=payload.cantidad_libros
     )
     db.add(inventario)
     db.commit()
 
-    # 3. Respuesta correcta con el campo requerido
+    # 4. Respuesta
     return {
         "id_libro": libro.id_libro,
         "nombre": libro.nombre,
-        "precio": int(libro.precio) if libro.precio else None,
-        "stock_total": 0
+        "precio": libro.precio,
+        "stock_total": payload.cantidad_libros
     }
+
 
 
 # Listar todos los libros
@@ -67,7 +71,7 @@ def listar_libros(
     query = db.query(Libro)
     if q:
         query = query.filter(Libro.nombre.ilike(f"%{q}%"))
-    libros = query.order_by(Libro.id_libro.desc()).all()
+    libros = query.order_by(Libro.id_libro.asc()).all()
 
     resultado = []
     for libro in libros:
@@ -107,6 +111,14 @@ def eliminar_libro(libro_id: int, db: Session = Depends(get_db)):
     libro = db.query(Libro).get(libro_id)
     if not libro:
         raise HTTPException(status_code=404, detail="Libro no encontrado")
+
+    # 1️⃣ Eliminar inventario global (inventario_libros)
+    db.query(InventarioLibro).filter_by(libro_id=libro_id).delete()
+
+    # 2️⃣ Eliminar inventario por punto de venta (inventario_pv)
+    db.query(InventarioPV).filter_by(id_libro=libro_id).delete()
+
+    # 4️⃣ Finalmente elimina el libro
     db.delete(libro)
     db.commit()
     return

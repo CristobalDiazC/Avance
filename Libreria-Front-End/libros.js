@@ -59,12 +59,14 @@ async function cargarLibros(q = "") {
       return;
     }
 
-    libros.forEach((libro) => {
+    // 📌 Recorremos con index para crear ID visual
+    libros.forEach((libro, index) => {
+      const idVisual = index + 1; // ← ID visual consecutivo
       const stockTotal = libro.stock_total;
       
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${libro.id_libro}</td>
+        <td>${idVisual}</td>  <!-- 👈 AHORA ID VISUAL -->
         <td>${libro.nombre}</td>
         <td>${stockTotal}</td>
         <td>${libro.precio != null ? "$" + libro.precio : "—"}</td>

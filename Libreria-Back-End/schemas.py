@@ -28,7 +28,7 @@ class LibroBase(BaseModel):
 
 # Esquema para crear nuevo libro
 class LibroCreate(LibroBase):
-    pass
+    cantidad_libros: int = 0
 
 # Esquema para actualizar libro
 class LibroUpdate(BaseModel):
