@@ -90,4 +90,6 @@ document.getElementById("formNuevoLibro").addEventListener("submit", async (e) =
 });
 
 
+
+
 document.addEventListener("DOMContentLoaded", cargarMateriasPrimas);
