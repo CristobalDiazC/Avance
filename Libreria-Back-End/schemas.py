@@ -33,10 +33,10 @@ class LibroCreate(LibroBase):
 # Esquema para actualizar libro
 class LibroUpdate(BaseModel):
     nombre: Optional[str] = None
-    categoria: Optional[str] = None
-    descripcion: Optional[str] = None
+    #categoria: Optional[str] = None
+    #descripcion: Optional[str] = None
     precio: Optional[float] = None
-    paginas_por_libro: Optional[int] = None
+    #paginas_por_libro: Optional[int] = None
 
 # Esquema de salida para libro
 

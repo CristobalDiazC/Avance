@@ -1,6 +1,8 @@
 const API_BASE = "http://127.0.0.1:8000";
 
-// Reutilizamos la función eliminarLibro existente, pero la hacemos más accesible
+/* ============================================================
+   ELIMINAR LIBRO (IGUAL QUE TU VERSIÓN)
+============================================================ */
 window.eliminarLibro = async function (libroId) {
     if (!confirm(`¿Estás seguro de que quieres eliminar el libro ID: ${libroId}? Esto también eliminará su inventario asociado.`)) {
         return;
@@ -13,7 +15,7 @@ window.eliminarLibro = async function (libroId) {
 
         if (res.status === 204) {
             alert("✅ Libro eliminado correctamente.");
-            cargarLibros(); 
+            cargarLibros();
         } else {
             const data = await res.json();
             alert("❌ Error al eliminar: " + (data.detail || "Error desconocido."));
@@ -22,71 +24,132 @@ window.eliminarLibro = async function (libroId) {
         console.error(error);
         alert("⚠️ Error al conectar con el servidor.");
     }
+};
+
+/* ============================================================
+   *** NUEVA LÓGICA REAL DE MODIFICAR LIBRO ***
+============================================================ */
+
+// 🟦 1. Llamada desde la tabla
+window.modificarLibro = async function (libroId) {
+    try {
+        const res = await fetch(`${API_BASE}/libros/${libroId}`);
+        if (!res.ok) throw new Error("No se pudo obtener el libro");
+
+        const libro = await res.json();
+        abrirModalEditarLibro(libro);
+    } catch (err) {
+        console.error(err);
+        alert("Error al cargar los datos del libro.");
+    }
+};
+
+// 🟦 2. Abrir modal con datos cargados
+function abrirModalEditarLibro(libro) {
+    document.getElementById("editar-libro-id").value = libro.id_libro;
+    document.getElementById("editar-libro-nombre").value = libro.nombre;
+    document.getElementById("editar-libro-precio").value = libro.precio;
+
+    const modal = document.getElementById("modal-editar-libro");
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
 }
 
-// NUEVA FUNCIÓN: Simulación de Modificar
-window.modificarLibro = function (libroId) {
-    // Aquí se debería abrir un modal similar al de agregar, pero pre-rellenado.
-    alert(`⚙️ Simulación: Abrir modal para modificar el Libro ID: ${libroId}`);
-    // En la implementación real, llamarías a una función para cargar datos y abrir el modal:
-    // abrirModalModificarLibro(libroId);
+// PATCH corregido
+document.getElementById("form-editar-libro").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById("editar-libro-id").value;
+
+    const data = {
+        nombre: document.getElementById("editar-libro-nombre").value,
+        precio: parseInt(document.getElementById("editar-libro-precio").value)
+    };
+
+    try {
+        const res = await fetch(`${API_BASE}/libros/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.detail || "Error desconocido.");
+        }
+
+        alert("✔ Libro actualizado correctamente.");
+        cerrarModalEditarLibro();
+        cargarLibros();
+
+    } catch (err) {
+        console.error(err);
+        alert("❌ Error al actualizar el libro: " + err.message);
+    }
+});
+
+// 🟦 3. Cerrar modal
+window.cerrarModalEditarLibro = function () {
+    const modal = document.getElementById("modal-editar-libro");
+    if (!modal) return;
+
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
 };
 
 
-// Carga y muestra la lista de libros
+/* ============================================================
+   CARGAR LIBROS (SIN CAMBIOS IMPORTANTES)
+============================================================ */
 async function cargarLibros(q = "") {
-  const tbody = document.getElementById("tabla-libros-gestion");
-  if (!tbody) return; 
+    const tbody = document.getElementById("tabla-libros-gestion");
+    if (!tbody) return;
 
-  tbody.innerHTML = "<tr><td colspan='5'>Cargando libros...</td></tr>";
+    tbody.innerHTML = "<tr><td colspan='5'>Cargando libros...</td></tr>";
 
-  let url = `${API_BASE}/libros/`;
-  if (q) {
-    url += `?q=${encodeURIComponent(q)}`;
-  }
+    let url = `${API_BASE}/libros/`;
+    if (q) url += `?q=${encodeURIComponent(q)}`;
 
-  try {
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error("Error al obtener el catálogo de libros");
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Error al obtener los libros");
+
+        const libros = await res.json();
+        tbody.innerHTML = "";
+
+        if (!libros.length) {
+            tbody.innerHTML = "<tr><td colspan='5'>No hay libros registrados</td></tr>";
+            return;
+        }
+
+        libros.forEach((libro, index) => {
+            const idVisual = index + 1;
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${idVisual}</td>
+                <td>${libro.nombre}</td>
+                <td>${libro.stock_total ?? 0}</td>
+                <td>${libro.precio != null ? "$" + libro.precio : "—"}</td>
+                <td>
+                    <a class="link" href="#" onclick="modificarLibro(${libro.id_libro}); return false;">Editar</a>
+                    <a class="link" href="#" onclick="eliminarLibro(${libro.id_libro}); return false;">Eliminar</a>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+    } catch (e) {
+        console.error(e);
+        tbody.innerHTML = "<tr><td colspan='5'>Error al cargar libros</td></tr>";
     }
-
-    const libros = await res.json();
-    tbody.innerHTML = "";
-
-    if (!libros.length) {
-      tbody.innerHTML = "<tr><td colspan='5'>No hay libros registrados</td></tr>";
-      return;
-    }
-
-    // 📌 Recorremos con index para crear ID visual
-    libros.forEach((libro, index) => {
-      const idVisual = index + 1; // ← ID visual consecutivo
-      const stockTotal = libro.stock_total;
-      
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${idVisual}</td>  <!-- 👈 AHORA ID VISUAL -->
-        <td>${libro.nombre}</td>
-        <td>${stockTotal}</td>
-        <td>${libro.precio != null ? "$" + libro.precio : "—"}</td>
-        <td>
-            <a class="link" href="#" onclick="modificarLibro(${libro.id_libro}); return false;">Editar</a>
-            <a class="link" href="#" onclick="eliminarLibro(${libro.id_libro}); return false;">Eliminar</a>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  } catch (e) {
-    console.error(e);
-    tbody.innerHTML = "<tr><td colspan='5'>Error al cargar libros</td></tr>";
-  }
 }
 
-/* =========================================
-   LÓGICA DEL MODAL "NUEVO LIBRO" (SIN CAMBIOS FUNCIONALES)
-   ========================================= */
-
+/* ============================================================
+   MODAL "NUEVO LIBRO" – SIN CAMBIOS
+============================================================ */
 let modalNuevoLibro, formNuevoLibro, materiasPrimasList;
 
 function inicializarModal() {
@@ -100,34 +163,25 @@ function inicializarModal() {
 }
 
 window.abrirModalNuevoLibro = async function () {
-    if (!modalNuevoLibro) inicializarModal(); 
-    
-    if (modalNuevoLibro) {
-        modalNuevoLibro.style.display = "flex"; 
-        document.body.style.overflow = "hidden"; 
-        await cargarMateriasPrimasFormulario();
-    } else {
-        console.error("Error: Modal no encontrado. Verifica el ID.");
-        alert("Error al intentar abrir el formulario.");
-    }
+    if (!modalNuevoLibro) inicializarModal();
+
+    modalNuevoLibro.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    await cargarMateriasPrimasFormulario();
 };
 
 window.cerrarModalNuevoLibro = function () {
-    if (modalNuevoLibro) {
-        modalNuevoLibro.style.display = "none"; 
-        document.body.style.overflow = "auto"; 
-        formNuevoLibro.reset(); 
-        if (materiasPrimasList) {
-            materiasPrimasList.innerHTML = '<p class="muted small">Cargando materias primas...</p>';
-        }
-    }
+    modalNuevoLibro.style.display = "none";
+    document.body.style.overflow = "auto";
+    formNuevoLibro.reset();
+    materiasPrimasList.innerHTML = '<p class="muted small">Cargando materias primas...</p>';
 };
 
 async function cargarMateriasPrimasFormulario() {
     if (!materiasPrimasList) return;
-    
-    materiasPrimasList.innerHTML = ""; 
-    const materiasPrimas = MOCK_MATERIAS_PRIMAS; 
+
+    materiasPrimasList.innerHTML = "";
+    const materiasPrimas = MOCK_MATERIAS_PRIMAS;
 
     if (materiasPrimas.length === 0) {
         materiasPrimasList.innerHTML = '<p class="muted small">No hay materias primas disponibles.</p>';
@@ -136,7 +190,7 @@ async function cargarMateriasPrimasFormulario() {
 
     materiasPrimas.forEach(mp => {
         const div = document.createElement("div");
-        div.classList.add("form-label"); 
+        div.classList.add("form-label");
         div.innerHTML = `
             <span>${mp.nombre} (${mp.unidad})</span>
             <input type="number" name="mp_${mp.id}" min="0" value="0" placeholder="Cantidad" />
@@ -152,11 +206,14 @@ async function manejarEnvioNuevoLibro(e) {
     const precio = parseFloat(this.precio.value);
 
     const materialesPrima = [];
-    materiasPrimasList.querySelectorAll('input[type="number"]').forEach(input => {
-        const mpId = input.name.split('_')[1]; 
+    materiasPrimasList.querySelectorAll("input[type='number']").forEach(input => {
+        const mpId = input.name.split("_")[1];
         const cantidad = parseInt(input.value);
         if (mpId && cantidad > 0) {
-            materialesPrima.push({ id_materia_prima: parseInt(mpId), cantidad: cantidad });
+            materialesPrima.push({
+                id_materia_prima: parseInt(mpId),
+                cantidad: cantidad
+            });
         }
     });
 
@@ -170,10 +227,10 @@ async function manejarEnvioNuevoLibro(e) {
     }
 
     const nuevoLibro = {
-        nombre: nombre,
-        precio: precio,
-        paginas_por_libro: 100, 
-        materiales_prima_necesarios: materialesPrima 
+        nombre,
+        precio,
+        paginas_por_libro: 100,
+        materiales_prima_necesarios: materialesPrima
     };
 
     try {
@@ -197,18 +254,19 @@ async function manejarEnvioNuevoLibro(e) {
     }
 }
 
-
-// Cuando carga la página
+/* ============================================================
+   INICIALIZACIÓN
+============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
-  inicializarModal(); 
-  cargarLibros(); 
+    inicializarModal();
+    cargarLibros();
 
-  const formFiltro = document.getElementById("filterFormLibros");
-  if (formFiltro) {
-    formFiltro.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const q = this.q.value.trim();
-      cargarLibros(q);
-    });
-  }
+    const formFiltro = document.getElementById("filterFormLibros");
+    if (formFiltro) {
+        formFiltro.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const q = this.q.value.trim();
+            cargarLibros(q);
+        });
+    }
 });

@@ -57,6 +57,38 @@
     </section>
   </main>
 
+<!-- Modal Editar Libro -->
+<div id="modal-editar-libro" class="modal hidden">
+  <div class="modal-content">
+    <h3 class="panel-title">Editar Libro</h3>
+
+    <form id="form-editar-libro" class="form-stack">
+      <!-- ID oculto -->
+      <input type="hidden" id="editar-libro-id">
+
+      <!-- Nombre -->
+      <div class="form-group">
+        <label for="editar-libro-nombre">Nombre</label>
+        <input type="text" id="editar-libro-nombre" class="input-styled" required>
+      </div>
+
+      <!-- Precio -->
+      <div class="form-group">
+        <label for="editar-libro-precio">Precio</label>
+        <input type="number" id="editar-libro-precio" class="input-styled" required>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="submit" class="btn primary">Guardar</button>
+        <button type="button" class="btn ghost" onclick="cerrarModalEditarLibro()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
   <footer class="site-footer container">
     <small class="muted">Conexión Escrita — Gestión de Libros</small>
   </footer>

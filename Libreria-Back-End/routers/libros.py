@@ -101,10 +101,34 @@ def listar_libros(q: Optional[str] = Query(None), db: Session = Depends(get_db))
 # Obtener un libro por ID
 @router.get("/{libro_id}", response_model=LibroOut)
 def obtener_libro(libro_id: int, db: Session = Depends(get_db)):
+
     libro = db.query(Libro).get(libro_id)
     if not libro:
         raise HTTPException(status_code=404, detail="Libro no encontrado")
-    return libro
+
+    # stock en inventario global
+    stock_global = (
+        db.query(func.sum(InventarioLibro.stock))
+        .filter(InventarioLibro.libro_id == libro.id_libro)
+        .scalar()
+    ) or 0
+
+    # stock en puntos de venta
+    stock_pv = (
+        db.query(func.sum(InventarioPV.stock))
+        .filter(InventarioPV.id_libro == libro.id_libro)
+        .scalar()
+    ) or 0
+
+    stock_total = stock_global + stock_pv
+
+    # respuesta formateada PARA EL SCHEMA LibroOut
+    return {
+        "id_libro": libro.id_libro,
+        "nombre": libro.nombre,
+        "precio": libro.precio,
+        "stock_total": stock_total
+    }
 
 # Actualizar parcialmente un libro
 @router.patch("/{libro_id}", response_model=LibroOut)
@@ -112,13 +136,40 @@ def actualizar_libro(libro_id: int, payload: LibroUpdate, db: Session = Depends(
     libro = db.query(Libro).get(libro_id)
     if not libro:
         raise HTTPException(status_code=404, detail="Libro no encontrado")
+
+    # Aplicar solo los cambios recibidos
     data = payload.model_dump(exclude_unset=True)
-    for k, v in data.items():
-        setattr(libro, k, v)
+
+    for campo, valor in data.items():
+        setattr(libro, campo, valor)
+
     db.commit()
     db.refresh(libro)
-    return libro
 
+    # Calcular stock_total
+    stock_global = (
+        db.query(func.sum(InventarioLibro.stock))
+        .filter(InventarioLibro.libro_id == libro.id_libro)
+        .scalar()
+    ) or 0
+
+    stock_pv = (
+        db.query(func.sum(InventarioPV.stock))
+        .filter(InventarioPV.id_libro == libro.id_libro)
+        .scalar()
+    ) or 0
+
+    stock_total = stock_global + stock_pv
+
+    # DEVOLVER FORMATO CORRECTO
+    return {
+        "id_libro": libro.id_libro,
+        "nombre": libro.nombre,
+        "precio": libro.precio,
+        "stock_total": stock_total
+    }
+    
+    
 # Eliminar un libro
 @router.delete("/{libro_id}", status_code=status.HTTP_204_NO_CONTENT)
 def eliminar_libro(libro_id: int, db: Session = Depends(get_db)):
