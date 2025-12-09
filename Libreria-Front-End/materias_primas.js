@@ -160,11 +160,11 @@ document.getElementById("form-ajuste").addEventListener("submit", async (e) => {
     });
 
     if (!res.ok) {
-      alert("❌ Error al ajustar materia prima");
+      alert("❌ Error al editar materia prima");
       return;
     }
 
-    alert("✅ Materia prima ajustada");
+    alert("✅ Materia prima editada correctamente");
     cerrarModalAjuste();
     cargarMateriasPrimas();
   } catch (err) {
