@@ -26,26 +26,24 @@ def listar(db: Session = Depends(get_db)):
     ]
 
 
+
 @router.post("/", response_model=InventarioPVOut)
 def crear(payload: InventarioPVCreate, db: Session = Depends(get_db)):
-    # Validar libro
+
     libro = db.query(Libro).get(payload.id_libro)
     if not libro:
         raise HTTPException(404, "Libro no existe")
 
-    # Validar punto de venta
     pv = db.query(PuntoVenta).get(payload.id_punto_venta)
     if not pv:
         raise HTTPException(404, "Punto de venta no existe")
 
-    # Ver si ya existe inventario de ese libro en ese PV
     existe = (
         db.query(InventarioPV)
         .filter_by(id_libro=payload.id_libro, id_punto_venta=payload.id_punto_venta)
         .first()
     )
 
-    # SI YA EXISTE → ACTUALIZAR STOCK
     if existe:
         existe.stock += payload.stock
         db.commit()
@@ -57,15 +55,15 @@ def crear(payload: InventarioPVCreate, db: Session = Depends(get_db)):
             stock=existe.stock,
             stock_minimo=existe.stock_minimo,
             libro=existe.libro.nombre,
-            precio=float(existe.libro.precio),   # 👈 añadido
+            precio=float(existe.libro.precio),
             punto_venta=existe.punto_venta.nombre
         )
 
-    # SI NO EXISTE → CREAR
     nuevo = InventarioPV(
         id_libro=payload.id_libro,
         id_punto_venta=payload.id_punto_venta,
-        stock=payload.stock
+        stock=payload.stock,
+        stock_minimo=payload.stock_minimo  # 👈 AGREGADO
     )
 
     db.add(nuevo)
@@ -79,9 +77,10 @@ def crear(payload: InventarioPVCreate, db: Session = Depends(get_db)):
         stock=nuevo.stock,
         stock_minimo=nuevo.stock_minimo,
         libro=libro.nombre,
-        precio=float(libro.precio),   # 👈 añadido
+        precio=float(libro.precio),
         punto_venta=pv.nombre
     )
+
 
 
 @router.post("/{inv_id}/ajustar", response_model=InventarioPVOut)

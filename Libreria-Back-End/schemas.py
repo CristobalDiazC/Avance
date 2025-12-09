@@ -87,6 +87,7 @@ class InventarioPVBase(BaseModel):
     id_libro: int
     id_punto_venta: int
     stock: int = 0
+    stock_minimo: int
 
 
 class InventarioPVCreate(InventarioPVBase):

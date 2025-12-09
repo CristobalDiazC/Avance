@@ -103,7 +103,7 @@ async function confirmarAgregar() {
     id_libro,
     id_punto_venta,
     stock,
-    stock_minimo   // 🔥 AHORA SÍ SE ENVÍA
+    stock_minimo
   };
 
   const res = await fetch(`${API_BASE}/inventario-pv/`, {
