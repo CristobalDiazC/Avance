@@ -64,24 +64,38 @@ def crear_libro(payload: LibroCreate, db: Session = Depends(get_db)):
 
 # Listar todos los libros
 @router.get("/", response_model=List[LibroOut])
-def listar_libros(
-    q: Optional[str] = Query(None, description="Filtra por nombre que contenga q"),
-    db: Session = Depends(get_db)
-):
+def listar_libros(q: Optional[str] = Query(None), db: Session = Depends(get_db)):
     query = db.query(Libro)
     if q:
         query = query.filter(Libro.nombre.ilike(f"%{q}%"))
-    libros = query.order_by(Libro.id_libro.asc()).all()
+
+    libros = query.all()
 
     resultado = []
     for libro in libros:
-        stock_total = db.query(func.sum(InventarioPV.stock)).filter_by(id_libro=libro.id_libro).scalar() or 0
+        # stock global
+        stock_global = (
+            db.query(func.sum(InventarioLibro.stock))
+            .filter(InventarioLibro.libro_id == libro.id_libro)
+            .scalar()
+        ) or 0
+
+        # stock en puntos de venta
+        stock_pv = (
+            db.query(func.sum(InventarioPV.stock))
+            .filter(InventarioPV.id_libro == libro.id_libro)
+            .scalar()
+        ) or 0
+
+        stock_total = stock_global + stock_pv
+
         resultado.append({
             "id_libro": libro.id_libro,
             "nombre": libro.nombre,
             "precio": libro.precio,
             "stock_total": stock_total
         })
+
     return resultado
 
 # Obtener un libro por ID

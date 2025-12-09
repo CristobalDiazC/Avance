@@ -14,17 +14,20 @@ Este módulo:
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
-from routers import libros, inventario, movimientos, usuarios, puntos_venta, inventario_pv,materias_primas
+from routers import libros, inventario, movimientos, usuarios, puntos_venta, inventario_pv, materias_primas
 from fastapi.middleware.cors import CORSMiddleware
 from models import Usuario
 
 app = FastAPI(title="API Librería")
 
+
+# ============================================================
+# USUARIO ADMIN AUTOMÁTICO
+# ============================================================
 @app.on_event("startup")
 def crear_usuario_admin():
     db = SessionLocal()
     try:
-        # ¿Existe algún usuario ya?
         hay_usuarios = db.query(Usuario).first()
 
         if not hay_usuarios:
@@ -43,26 +46,36 @@ def crear_usuario_admin():
     finally:
         db.close()
 
-# CORS origins solo, se utiliza en producción o en desarrollo pero bajo NGINX
+
+# ============================================================
+# CONFIGURACIÓN CORS CORRECTA
+# ============================================================
+# SOLO permitimos tu frontend y backend (esto es lo correcto)
 origins = [
-    "http://127.0.0.1:5500",  # por ejemplo si usas Live Server
+    "http://127.0.0.1:5500",   # Live Server
     "http://localhost:5500",
-    "http://127.0.0.1:8000",  # si sirves HTML con FastAPI
+    "http://127.0.0.1:8000",   # Backend (docs, testing)
     "http://localhost:8000",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],# Para desarrollo es mejor "*" no -> origins,
+    allow_origins=origins,     # <─ AHORA SÍ usamos origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],       # Permite GET, POST, PUT, DELETE
+    allow_headers=["*"],       # Permite Content-Type, Authorization, etc.
 )
 
-# Crea tablas
+
+# ============================================================
+# CREAR TABLAS
+# ============================================================
 Base.metadata.create_all(bind=engine)
 
-# Rutas
+
+# ============================================================
+# REGISTRO DE ROUTERS
+# ============================================================
 app.include_router(libros.router)
 app.include_router(inventario.router)
 app.include_router(movimientos.router)
@@ -72,7 +85,9 @@ app.include_router(inventario_pv.router)
 app.include_router(materias_primas.router)
 
 
-
+# ============================================================
+# RUTA BASE
+# ============================================================
 @app.get("/")
 def root():
     return {"message": "Bienvenido a la API de Librería"}

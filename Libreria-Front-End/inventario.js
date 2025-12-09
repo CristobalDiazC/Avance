@@ -94,12 +94,17 @@ async function confirmarAgregar() {
   const stock = parseInt(document.getElementById("stockInicial").value, 10);
   const stock_minimo = parseInt(document.getElementById("stockMinimo").value, 10);
 
-  const payload = { 
-    id_libro, 
-    id_punto_venta, 
-    stock 
-  };
+  if (isNaN(stock_minimo)) {
+    alert("Debes ingresar un stock mínimo.");
+    return;
+  }
 
+  const payload = { 
+    id_libro,
+    id_punto_venta,
+    stock,
+    stock_minimo   // 🔥 AHORA SÍ SE ENVÍA
+  };
 
   const res = await fetch(`${API_BASE}/inventario-pv/`, {
     method: "POST",
@@ -117,6 +122,7 @@ async function confirmarAgregar() {
   cerrarModal();
   cargarInventario();
 }
+
 
 // ===================================================
 // VENDER LIBRO
